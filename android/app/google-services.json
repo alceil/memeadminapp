@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "990476261825",
+    "firebase_url": "https://memetemplateapp-8b26b.firebaseio.com",
+    "project_id": "memetemplateapp-8b26b",
+    "storage_bucket": "memetemplateapp-8b26b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990476261825:android:0cde45022df8f582a9b740",
+        "android_client_info": {
+          "package_name": "com.cgsteam.memeadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990476261825-pue1tgqqr2vo41o9c6kogr7brmiod15u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-zNPW_9aoo-AMJFB94qf-Ac6zvvB5RRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990476261825-pue1tgqqr2vo41o9c6kogr7brmiod15u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990476261825:android:f1b11a6f7834bb8fa9b740",
+        "android_client_info": {
+          "package_name": "com.cgsteam.memetemplate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990476261825-pue1tgqqr2vo41o9c6kogr7brmiod15u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-zNPW_9aoo-AMJFB94qf-Ac6zvvB5RRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "990476261825-pue1tgqqr2vo41o9c6kogr7brmiod15u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
