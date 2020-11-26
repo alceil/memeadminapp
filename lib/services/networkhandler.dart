@@ -23,6 +23,16 @@ class Networkhandling {
     return response;
   }
 
+  Future<http.Response> patch(String url, Map<String, String> body) async {
+    url = formatter(url);
+    print(url);
+    print(body);
+    var response = await http.patch(url,
+        body: json.encode(body), headers: {"Content-type": "application/json"});
+    print(json.encode(body));
+    return response;
+  }
+
   Future<http.Response> patchImage(String url, String filepath) async {
     url = formatter(url);
     var request = http.MultipartRequest('POST', Uri.parse(url));

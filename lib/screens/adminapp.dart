@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,11 +18,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   addmethods addObj = addmethods();
   final CollectionReference ref = Firestore.instance.collection('categories');
-  List<String> kindi = ['one', 'two', 'three'];
+  List catname = [];
   List<String> menuitems;
   final networkHandler = Networkhandling();
   File SampleImage;
   String url;
+  String memname;
   String btn1;
   var selecteditem;
   Future<bool> dialogTrigger(BuildContext context) async {
@@ -52,7 +55,22 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       SampleImage = temp;
     });
+    print(SampleImage.path);
+    var res = await networkHandler.patchImage('/memes/add/image', temp.path);
+    var body = json.decode(res.body);
+    url = body["url"].toString();
+    print(url);
     // uploadimg();
+  }
+
+  void getData() async {
+    var res = await networkHandler.get("/memes/addMeme");
+    print(res);
+    setState(() {
+      catname = res;
+    });
+
+    print(catname[0]['catname']);
   }
 
   void uploadimg() async {
@@ -66,6 +84,12 @@ class _HomePageState extends State<HomePage> {
         .getDownloadURL()
         .catchError((e) => print(e));
     url = imgurl.toString();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   @override
@@ -144,54 +168,65 @@ class _HomePageState extends State<HomePage> {
                 SizedBox(
                   height: 5.0,
                 ),
-                StreamBuilder(
-                    stream: ref.snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData)
-                        return const Text("Loading.....");
-                      else {
-                        List<DropdownMenuItem> currencyItems = [];
-                        for (int i = 0;
-                            i < snapshot.data.documents.length;
-                            i++) {
-                          DocumentSnapshot snap = snapshot.data.documents[i];
-                          currencyItems.add(
-                            DropdownMenuItem(
-                              child: Text(
-                                snap.data['catname'],
-                                style: TextStyle(color: Color(0xff11b719)),
-                              ),
-                              value: snap.data['catname'],
-                            ),
-                          );
-                        }
-                        return DropdownButton(
-                          items: currencyItems,
-                          hint: Text('choose'),
-                          onChanged: (val) {
-                            setState(() {
-                              selecteditem = val;
-                            });
-                          },
-                          value: selecteditem,
-                        );
-                      }
-                    }),
+                // StreamBuilder(
+                //     stream: ref.snapshots(),
+                //     builder: (context, snapshot) {
+                //       if (!snapshot.hasData)
+                //         return const Text("Loading.....");
+                //       else {
+                //         List<DropdownMenuItem> currencyItems = [];
+                //         for (int i = 0;
+                //             i < snapshot.data.documents.length;
+                //             i++) {
+                //           DocumentSnapshot snap = snapshot.data.documents[i];
+                //           currencyItems.add(
+                //             DropdownMenuItem(
+                //               child: Text(
+                //                 snap.data['catname'],
+                //                 style: TextStyle(color: Color(0xff11b719)),
+                //               ),
+                //               value: snap.data['catname'],
+                //             ),
+                //           );
+                //         }
+
+                //       }
+                //     }),
+                DropdownButton(
+                  items: catname.map((item) {
+                    return new DropdownMenuItem(
+                      child: Text(item['catname']),
+                      value: item['catname'].toString(),
+                    );
+                  }).toList(),
+                  hint: Text('choose'),
+                  onChanged: (val) {
+                    setState(() {
+                      selecteditem = val;
+                    });
+                  },
+                  value: selecteditem,
+                ),
+                TextField(
+                  decoration: InputDecoration(hintText: 'Meme Name'),
+                  onChanged: (value) {
+                    this.memname = value;
+                  },
+                ),
                 FlatButton(
                   color: Colors.green,
                   onPressed: () async {
-                    // addObj.addData({
-                    //   'url': this.url,
-                    // }, selecteditem.toString()).then((result) {
-                    //   dialogTrigger(context);
-                    // });
-                    if (SampleImage.path != null) {
-                      var imgResponse = await networkHandler.patchImage(
-                          "kindi", SampleImage.path);
-                      if (imgResponse.statusCode == 200 ||
-                          imgResponse.statusCode == 201) {
-                        dialogTrigger(context);
-                      }
+                    Map<String, String> data = {
+                      'url': this.url,
+                      'memename': this.memname
+                    };
+                    print(data);
+                    var response = await networkHandler.patch(
+                        '/memes/addMeme/$selecteditem', data);
+                    if (response.statusCode == 200 ||
+                        response.statusCode == 201) {
+                      print(response.body);
+                      dialogTrigger(context);
                     }
                   },
                   child: Text('Upload data'),

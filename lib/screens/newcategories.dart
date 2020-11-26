@@ -9,7 +9,6 @@ import 'package:memeadmin/screens/adminapp.dart';
 import 'package:memeadmin/screens/general.dart';
 import 'package:memeadmin/services/crud.dart';
 import 'package:memeadmin/services/networkhandler.dart';
-import 'package:http/http.dart' as http;
 
 class NewCategory extends StatefulWidget {
   @override
@@ -21,6 +20,7 @@ class _NewCategoryState extends State<NewCategory> {
   File SampleImage;
   String catname;
   String url;
+  String imgUrl;
   final networkHandler = Networkhandling();
 
   Future<bool> dialogTrigger(BuildContext context) async {
@@ -52,9 +52,8 @@ class _NewCategoryState extends State<NewCategory> {
     setState(() {
       SampleImage = temp;
     });
-    // uploadimg();
-    var res =
-        await networkHandler.patchImage('/memes/add/image', SampleImage.path);
+    print(SampleImage.path);
+    var res = await networkHandler.patchImage('/memes/add/image', temp.path);
     var body = json.decode(res.body);
     url = body["url"].toString();
     print(url);

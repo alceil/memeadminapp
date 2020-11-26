@@ -19,11 +19,10 @@ class General extends StatefulWidget {
 class _GeneralState extends State<General> {
   addmethods addObj = addmethods();
   final networkHandler = Networkhandling();
-  final CollectionReference ref = Firestore.instance.collection('categories');
-  List<String> kindi = ['one', 'two', 'three'];
   List<String> menuitems;
   File SampleImage;
   String url;
+  String memname;
   String btn1;
   var selecteditem;
   Future<bool> dialogTrigger(BuildContext context) async {
@@ -145,6 +144,12 @@ class _GeneralState extends State<General> {
                     getImage();
                   },
                 ),
+                TextField(
+                  decoration: InputDecoration(hintText: 'Meme Name'),
+                  onChanged: (value) {
+                    this.memname = value;
+                  },
+                ),
                 SizedBox(
                   height: 5.0,
                 ),
@@ -153,6 +158,7 @@ class _GeneralState extends State<General> {
                   onPressed: () async {
                     Map<String, String> data = {
                       'imgUrl': this.url,
+                      'memename': this.memname
                     };
                     print(data);
                     var response =
